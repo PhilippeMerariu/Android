@@ -1,4 +1,4 @@
-package com.example.a1430284.assignment2;
+package com.example.a1430284.assignment2.Model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,7 +18,7 @@ public class NoteDatabaseHandler extends SQLiteOpenHelper {
     /**
      * Update this field for every structural change to the database.
      */
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
 
     // TODO: maybe these could be replaced with a map of tables...

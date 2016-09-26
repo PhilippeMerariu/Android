@@ -1,4 +1,4 @@
-package com.example.a1430284.assignment2;
+package com.example.a1430284.assignment2.Model;
 
 import java.util.Date;
 
