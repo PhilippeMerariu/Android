@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -114,11 +115,21 @@ public class MainActivityFragment extends Fragment {
             // Update UI components
             Note note = getItem(position);
 
-            TextView firstName = (TextView) root.findViewById(R.id.firstName_TextView);
-            TextView lastName = (TextView) root.findViewById(R.id.lastName_TextView);
+            TextView title = (TextView) root.findViewById(R.id.title_TextView);
+            TextView body = (TextView) root.findViewById(R.id.body_TextView);
+            ImageView category = (ImageView) root.findViewById(R.id.category_ImageView);
+            ImageView reminder = (ImageView) root.findViewById(R.id.alarm_ImageView);
 
-            firstName.setText(note.getTitle());
-            lastName.setText(note.getTitle());
+            title.setText(note.getTitle());
+            body.setText(note.getBody());
+            category.setBackgroundColor(note.getCategory());
+            if (note.isHasReminder()){
+                reminder.setImageResource(R.drawable.ic_alarm_on_black_24dp);
+            }
+            else{
+                reminder.setImageResource(R.drawable.ic_alarm_off_black_24dp);
+            }
+
 
             return root;
         }

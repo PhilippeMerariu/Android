@@ -18,7 +18,7 @@ public class NoteDatabaseHandler extends SQLiteOpenHelper {
     /**
      * Update this field for every structural change to the database.
      */
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
 
     // TODO: maybe these could be replaced with a map of tables...

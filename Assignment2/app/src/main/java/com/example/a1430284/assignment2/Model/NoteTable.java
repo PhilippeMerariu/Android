@@ -22,6 +22,7 @@ public class NoteTable extends Table<Note> {
     private static final String COLUMN_BODY = "body";
     private static final String COLUMN_REMINDER = "reminder";
     private static final String COLUMN_CATEGORY = "category";
+    private static final String COLUMN_HAS_REMINDER = "isHasReminder";
     private static final String COLUMN_CREATED = "created";
 
     /**
@@ -32,10 +33,11 @@ public class NoteTable extends Table<Note> {
         super(dbh, "note");
         this.dbh = dbh;
 
-        addColumn(new Column(COLUMN_TITLE, "TEXT").notNull());
+        addColumn(new Column(COLUMN_TITLE, "TEXT").notNull().unique());
         addColumn(new Column(COLUMN_BODY, "TEXT"));
         addColumn(new Column(COLUMN_REMINDER, "TEXT"));
         addColumn(new Column(COLUMN_CATEGORY, "INTEGER").notNull());
+        addColumn(new Column(COLUMN_HAS_REMINDER, "INTEGER"));
         addColumn(new Column(COLUMN_CREATED, "TEXT").notNull());
     }
 
@@ -46,24 +48,32 @@ public class NoteTable extends Table<Note> {
         values.put(COLUMN_BODY, element.getBody());
         values.put(COLUMN_REMINDER, element.getReminder() != null ? isoISO8601.format(element.getReminder()) : null);
         values.put(COLUMN_CATEGORY, element.getCategory());
+        values.put(COLUMN_HAS_REMINDER, element.isHasReminder());
         values.put(COLUMN_CREATED, element.getCreated() != null ? isoISO8601.format(element.getCreated()) : null);
         return values;
     }
 
     @Override
     public Note fromCursor(Cursor cursor) throws DatabaseException {
-        Note contact = new Note(cursor.getLong(0));
+        Note note = new Note(cursor.getLong(0));
 
         // get name and phone number
-        contact.setTitle(cursor.getString(1));
-        contact.setBody(cursor.getString(2));
-        contact.setHasReminder(cursor.getInt(3) > 0);
-        contact.setCategory(cursor.getInt(4));
-
-        // last called
-        if(!cursor.isNull(5)) {
+        note.setTitle(cursor.getString(1));
+        note.setBody(cursor.getString(2));
+        note.setCategory(cursor.getInt(4));
+        note.setHasReminder(cursor.getInt(5) > 0);
+        if(!cursor.isNull(3)) {
             try {
-                contact.setCreated(isoISO8601.parse(cursor.getString(5)));
+                note.setReminder(isoISO8601.parse(cursor.getString(3)));
+            }
+            catch (ParseException e) {
+                // package a ParseException as a generic DatabaseException
+                throw new DatabaseException(e);
+            }
+        }
+        if(!cursor.isNull(6)) {
+            try {
+                note.setCreated(isoISO8601.parse(cursor.getString(6)));
             }
             catch (ParseException e) {
                 // package a ParseException as a generic DatabaseException
@@ -71,29 +81,7 @@ public class NoteTable extends Table<Note> {
             }
         }
 
-        return contact;
-    }
-    /**
-     * Get the SQL CREATE TABLE statement for this table.
-     * @return SQL CREATE TABLE statement.
-     */
-    /*public String getCreateTableStatement() {
-        return "CREATE TABLE note (\n" +
-                "_id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "title TEXT NOT NULL, UNIQUE, \n" +
-                "body TEXT, \n" +
-                "reminder TEXT,\n" +
-                "category INTEGER NOT NULL,\n" +
-                "created TEXT NOT NULL\n" +
-                ");";
-    }*/
-
-    /**
-     * Get the SQL DROP TABLE statement for this table.
-     * @return SQL DROP TABLE statement.
-     */
-    public String getDropTableStatement() {
-        return "note";
+        return note;
     }
 
     @Override

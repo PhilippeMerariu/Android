@@ -10,22 +10,50 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Foo"
-            android:id="@+id/lastName_TextView" />
+            android:id="@+id/title_TextView"
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Bar"
-            android:id="@+id/firstName_TextView"
-            android:layout_marginStart="10dp"
+            android:id="@+id/body_TextView"
+            android:layout_below="@+id/title_TextView"
+            android:layout_alignLeft="@+id/title_TextView"
+            android:layout_alignStart="@+id/title_TextView" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/category_ImageView"
+            android:layout_weight="1"
+            android:background="@android:color/holo_orange_light"
+            android:minHeight="100dp"
+            android:minWidth="15dp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/lastName_TextView" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/alarm_ImageView"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/body_TextView"
+            android:src="@drawable/ic_alarm_on_black_24dp"
+            android:clickable="true"/>
 
     </RelativeLayout>
+
 </LinearLayout>
